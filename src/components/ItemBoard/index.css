@@ -1,0 +1,30 @@
+.board__item {
+    margin: 0 20px;
+}
+.board__header {
+    font-weight: 600;
+    font-size: 36px;
+}
+
+.board__display-data {
+    background-color: gray;
+    border-radius: 10px;
+    box-shadow: 3px 2px 2px -1px black;
+    width: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-direction: column;
+    min-height: 74vh;
+
+}
+
+.board__task {
+    background-color: rgb(130, 153, 219);
+    box-shadow: 3px 2px 2px -1px rgb(98, 103, 106);
+    border-radius: 4px;
+    width: 200px;
+    height: 60px;
+    padding: 20px;
+    cursor: grab;
+}
