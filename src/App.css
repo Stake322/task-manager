@@ -3,6 +3,8 @@
   height: 70px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  padding: 30px;
   font-size: 22px;
   font-weight: 600;
 
@@ -13,4 +15,15 @@
   align-items: center;
   width: 1500px;
   margin: 30px auto;
+}
+button{
+  width: 140px;
+  height: 70px;
+  border-radius: 5%;
+  font-size: 18px;
+  background-color: rgb(165, 213, 215);
+  cursor: pointer;
+}
+button:hover{
+  background-color: white;
 }

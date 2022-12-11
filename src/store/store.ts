@@ -1,10 +1,10 @@
 
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 
-import todoReducer from "./reducers/todos";
+import { taskReducer } from "./reducers/tasks";
 
 const rootReducer = combineReducers({
-    todo: todoReducer
+    tasks: taskReducer
 
 })
 
