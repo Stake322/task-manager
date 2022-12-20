@@ -16,7 +16,6 @@
     justify-content: space-evenly;
     flex-direction: column;
     min-height: 74vh;
-
 }
 
 .board__task {
@@ -24,7 +23,25 @@
     box-shadow: 3px 2px 2px -1px rgb(98, 103, 106);
     border-radius: 4px;
     width: 200px;
-    height: 60px;
-    padding: 20px;
+    height: 110px;
+    padding: 10px;
     cursor: grab;
+    display: flex;
+    flex-direction: column;
+    margin: 15px;
+}
+.item__name {
+    font-weight: 600;
+    font-size: 22px;
+    color: white;
+    margin: 5px 0;
+}
+.item__sp {
+    color: rgba(0, 0, 0, 0.709);
+    margin: 5px 0;
+}
+.item__description {
+    word-wrap: break-word;
+    font-size: 16px;
+    margin: 5px 0;
 }

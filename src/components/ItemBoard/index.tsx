@@ -3,50 +3,18 @@ import './index.css'
 import React, { useEffect, useState } from 'react';
 
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { Column } from '../../store/reducers/columns';
 import { getId } from '../../utils';
-import { item, Task, taskActions } from './../../store/reducers/tasks'
+import { task, taskActions } from './../../store/reducers/tasks'
 
 export const ItemBoard = (): JSX.Element => {
     const { changeStatus, addTask } = taskActions;
-    // const tasks = useAppSelector(state => state.tasks.tasks)
-
-    const [tasks, setTasks] = useState<Task[]>([
-
-        {
-            id: 1, status: 'Backlog', items: [
-                {
-                    id: getId(), description: "Использовать в проекте drag and drop events", name: "Use drag and drop", SP: 0.5,
-                }
-            ]
-        },
-        {
-            id: 2, status: 'In Progress', items: [
-                {
-                    id: getId(), description: "Необходимо создать проект", name: "create project", SP: 0.5,
-                },
-                {
-                    id: getId(), description: "Добавить в проект линтер", name: "add eslint", SP: 0.5,
-                },
-                {
-                    id: getId(), description: "Добавить в проект redux tool kit", name: "add rtk", SP: 0.5,
-                },
-            ]
-        },
-        {
-            id: 3, status: 'Production', items: [],
-        },
-        {
-            id: 4, status: 'Review', items: [],
-        },
-    ])
-
-    useEffect(() => {
-        console.log('task change', tasks);
-    }, [tasks])
+    const tasks = useAppSelector(state => state.tasks.tasks)
+    const columns = useAppSelector(state => state.columns.columns)
     const dispatch = useAppDispatch()
 
-    const [currentBoard, setCurrentBoard] = useState<Task | null>(null)
-    const [currentItem, setCurrentItem] = useState<item | null>(null)
+    const [currentColumn, setCurrentColumn] = useState<Column | null>(null)
+    const [currentItem, setCurrentItem] = useState<task | null>(null)
 
     const dragOverHandler = (e: React.DragEvent<HTMLDivElement>,): void => {
         const target = e.target as HTMLElement
@@ -57,22 +25,17 @@ export const ItemBoard = (): JSX.Element => {
     }
 
     const dragLeaveHandler = (e: React.DragEvent<HTMLDivElement>): void => {
-        // console.log(e);
         const target = e.target as HTMLElement
         target.style.boxShadow = 'none'
 
     }
 
-    const dragStartHandler = (e: React.DragEvent<HTMLDivElement>, board: Task, item: item): void => {
-        // console.log(e);
-        console.log('itemDrag', item);
-        console.log('boardDrag', board);
-        setCurrentBoard(board)
-        setCurrentItem(item)
+    const dragStartHandler = (e: React.DragEvent<HTMLDivElement>, column: Column, task: task): void => {
+        setCurrentColumn(column)
+        setCurrentItem(task)
     }
 
     const dragEndHandler = (e: React.DragEvent<HTMLDivElement>): void => {
-        // console.log(e);
         e.preventDefault()
         console.log(' drop END', e);
         const target = e.target as HTMLElement
@@ -80,65 +43,45 @@ export const ItemBoard = (): JSX.Element => {
 
     }
 
-    const dropHandler = (e: React.DragEvent<HTMLDivElement>, board: Task, item: item): void => {
+    const dropHandler = (e: React.DragEvent<HTMLDivElement>, column: Column, task: task): void => {
         e.preventDefault()
-        // change mestami items === > all logic to reducers
     }
-    const dropCardHandler = (e: React.DragEvent<HTMLDivElement>, board: Task,): void => {
-        // console.log('itemDrop', item);
-        console.log('boarDrop', board);
+    const dropCardHandler = (e: React.DragEvent<HTMLDivElement>, column: Column,): void => {
         e.preventDefault()
-        if (currentBoard && currentItem) {
-            // dispatch(addTask({ board, currentItem }))
-            board.items.push(currentItem)
-            const currentIndex = currentBoard.items.indexOf(currentItem)
-            currentBoard.items.splice(currentIndex, 1)
-            // dispatch(changeStatus({ board, currentBoard }))
-            setTasks(tasks.map(task => {
-                if (task.id === board.id) {
-                    console.log('i am here');
-                    return board
-                }
-                if (task.id === currentBoard.id) {
-                    console.log('i am here 2');
-                    return currentBoard
-                }
-                console.log('i am here 3');
-                return task
-            }))
+        if (currentColumn && currentItem) {
+            dispatch(changeStatus({ currentItem, column }))
         }
         const target = e.target as HTMLElement
         target.style.boxShadow = 'none'
     }
 
-
     return (
         <div className='board__item container'>
-            {tasks.map(board => (
+            {columns.map(column => (
                 <div
-                    key={board.id}
+                    key={column.id}
                     onDragOver={e => dragOverHandler(e)}
-                    onDrop={e => dropCardHandler(e, board)}
+                    onDrop={e => dropCardHandler(e, column)}
 
                 >
                     <div className='board__header'>
-                        {board.status}
+                        {column.status}
                     </div>
                     <div className='board__display-data'>
-                        {board.items.map((item: item) => {
+                        {tasks.filter(i => i.status === column.status).map((task: task) => {
                             return (
-                                <div key={item.id} className='board__task'
+                                <div key={task.id} className='board__task'
                                     draggable
                                     onDragOver={e => dragOverHandler(e)}
                                     onDragLeave={e => dragLeaveHandler(e)}
-                                    onDragStart={e => dragStartHandler(e, board, item)}
+                                    onDragStart={e => dragStartHandler(e, column, task)}
                                     onDragEnd={e => dragEndHandler(e)}
-                                    onDrop={e => dropHandler(e, board, item)}
+                                    onDrop={e => dropHandler(e, column, task)}
 
                                 >
-                                    {item.name}
-                                    <span>{item.description}</span>
-                                    <span>{item.SP}</span>
+                                    <span className='item__name'> {task.name}</span>
+                                    <span className='item__description'>{task.description}</span>
+                                    <span className='item__sp'>SP: {task.SP}</span>
                                 </div>
                             )
                         })}
