@@ -39,28 +39,20 @@ function App() {
       <Header openModal={openModal} />
       <ModalWindow open={open} closeModal={closeModal} onSave={onSave}>
         <div className='modal__new-task'>
-          <>
-            <label>name:</label>
-            <input placeholder='enter name' name='name' value={taskInfo.name} onChange={onChangeInput} />
-          </>
-          <>
-            <label>description:</label>
-            <textarea placeholder='enter description' name='description' value={taskInfo.description} onChange={onChangeInput} />
-          </>
-          <>
-            <label>SP:</label>
-            <input type={'number'} placeholder='enter SP' name='sp' value={taskInfo.sp} onChange={onChangeInput} />
-          </>
-          <>
-            <label>Status Task:</label>
-            <select
-              onChange={(e: ChangeEvent<HTMLSelectElement>) => setTaskInfo(prev => ({ ...prev, status: e.target.value }))}
-            >
-              {columns.map(i => (
-                <option key={i.id}>{i.status}</option>
-              ))}
-            </select>
-          </>
+          <label>name:</label>
+          <input placeholder='enter name' name='name' value={taskInfo.name} onChange={onChangeInput} />
+          <label>description:</label>
+          <textarea placeholder='enter description' name='description' value={taskInfo.description} onChange={onChangeInput} />
+          <label>SP:</label>
+          <input type={'number'} placeholder='enter SP' name='sp' value={taskInfo.sp} onChange={onChangeInput} />
+          <label>Status Task:</label>
+          <select
+            onChange={(e: ChangeEvent<HTMLSelectElement>) => setTaskInfo(prev => ({ ...prev, status: e.target.value }))}
+          >
+            {columns.map(i => (
+              <option key={i.id}>{i.status}</option>
+            ))}
+          </select>
         </div>
       </ModalWindow>
       <Board />
